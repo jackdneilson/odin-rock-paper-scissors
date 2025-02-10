@@ -1,3 +1,6 @@
+let computerScore = 0;
+let humanScore = 0;
+
 function getComputerChoice() {
 	let rnd = Math.random();
 	if (rnd <= 0.33) {
@@ -9,57 +12,50 @@ function getComputerChoice() {
 	}
 }
 
-function getHumanChoice() {
-	return prompt("Enter rock, paper, or scissors.").toLowerCase();
-}
-
-function playRound() {
+function playRound(humanChoice) {
 	let computerChoice = getComputerChoice();
-	let humanChoice = getHumanChoice();
 
 	if (computerChoice == humanChoice) {
 		return;
 	}
 
-	if (computerChoice == "rock") {
-		if (humanChoice == "scissors") {
-			computerScore++;
-		} else {
-			humanScore++;
-		}
-	}
-
-	if (computerChoice == "scissors") {
-		if (humanChoice == "paper") {
-			computerScore++;
-		} else {
-			humanScore++;
-		}
-	}
-
-	if (computerChoice == "paper") {
-		if (humanChoice == "rock") {
-			computerScore++;
-		} else {
-			humanScore++;
-		}
-	}
-}
-
-let computerScore = 0;
-let humanScore = 0;
-
-function playGame() {
-	for (i = 0; i < 5; i++) {
-		playRound();
-	}
-	if (computerScore > humanScore) {
-		console.log("Computer won");
-	} else if (computerScore == humanScore) {
-		console.log("Draw");
+	if (
+		(computerChoice == "rock" && humanChoice == "scissors") ||
+		(computerChoice == "scissors" && humanChoice == "paper") ||
+		(computerChoice == "paper" && humanChoice == "rock")
+	) {
+		computerScore++;
 	} else {
-		console.log("Human won");
+		humanScore++;
+	}
+
+	document.querySelector("#humanScore").textContent =
+		`Human Score: ${humanScore}`;
+	document.querySelector("#computerScore").textContent =
+		`Computer Score: ${computerScore}`;
+
+	if (computerScore == 5) {
+		alert("Computer won!");
+		endGame();
+	}
+	if (humanScore == 5) {
+		alert("Human won!");
+		endGame();
 	}
 }
 
-playGame();
+function endGame() {
+	document.querySelector("body").replaceChildren();
+}
+
+document
+	.querySelector("#rock")
+	.addEventListener("click", () => playRound("rock"));
+
+document
+	.querySelector("#paper")
+	.addEventListener("click", () => playRound("paper"));
+
+document
+	.querySelector("#scissors")
+	.addEventListener("click", () => playRound("scissors"));
